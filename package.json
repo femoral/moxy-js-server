@@ -6,7 +6,7 @@
   "bin": {
     "moxy": "dist/server/app.js"
   },
-  "files":[
+  "files": [
     "dist/**/*"
   ],
   "scripts": {
@@ -31,7 +31,6 @@
     "@types/node": "^14.14.31",
     "@types/shelljs": "^0.8.8",
     "@types/uuid": "^8.3.0",
-    "cross-env": "^7.0.3",
     "rimraf": "^3.0.2",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.2"
@@ -41,6 +40,7 @@
     "express": "^4.17.1",
     "http-proxy": "^1.18.1",
     "shelljs": "^0.8.4",
+    "cross-env": "^7.0.3",
     "uuid": "^8.3.2"
   }
 }
