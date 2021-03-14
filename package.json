@@ -1,21 +1,16 @@
 {
-  "name": "moxy-js",
+  "name": "moxy-js-server",
   "version": "0.0.1",
   "description": "Mocks & Reverse Proxy",
-  "main": "dist/server/app.js",
-  "bin": {
-    "moxy": "dist/server/app.js"
-  },
+  "main": "dist/app.js",
   "files": [
     "dist/**/*"
   ],
   "scripts": {
-    "build": "rimraf dist/ && npm run build:server",
-    "build:server": "tsc --build server/tsconfig.json",
-    "start": "cross-env NODE_ENV=production node dist/server/app.js",
-    "serve": "npm run serve:server",
-    "serve:server": "ts-node --project server/tsconfig.json server/app.ts",
-    "serve:server:child": "ts-node --project server/tsconfig.json server/child/app.ts"
+    "build": "tsc",
+    "start": "cross-env NODE_ENV=production node dist/app.js",
+    "serve": "ts-node src/app.ts",
+    "serve:child": "ts-node src/child/app.ts"
   },
   "keywords": [
     "mock",
@@ -37,10 +32,10 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "express": "^4.17.1",
     "http-proxy": "^1.18.1",
     "shelljs": "^0.8.4",
-    "cross-env": "^7.0.3",
     "uuid": "^8.3.2"
   }
 }

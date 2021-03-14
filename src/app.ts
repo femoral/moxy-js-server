@@ -23,7 +23,7 @@ app.use((req, res) => {
 });
 
 app.listen(8080, async () => {
-  console.log("Main server started on port 8080");
+  console.log("Main src started on port 8080");
   await childController.start();
 
   fs.watch(COLLECTIONS_PATH).on(
