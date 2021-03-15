@@ -1,6 +1,5 @@
-import { NextFunction, Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import * as getCollectionsUseCase from "../domain/get-collections.usecase";
-import express from "express";
 import cors from "cors";
 
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
@@ -15,10 +14,10 @@ process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
   });
 
   (await getCollectionsUseCase.getCollections()).forEach((collection) =>
-    collection.routes.forEach((route) =>
-      app[route.method](
-        `/${collection.name}${route.path}`,
-        route.handler.bind(route)
+    collection.paths.forEach((path) =>
+      app[path.method](
+        `/${collection.name}${path.path}`,
+        path.handler.bind(path)
       )
     )
   );

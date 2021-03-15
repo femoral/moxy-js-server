@@ -1,13 +1,13 @@
-import { Route, RouteMethod } from "./route";
+import { Path, PathMethod } from "./path";
 import { Request, Response } from "express";
 import { v4 as uuid } from "uuid";
 
-export class MockRoute extends Route {
+export class MockPath extends Path {
   constructor(
     id = uuid(),
     collection: string,
     path: string,
-    method: RouteMethod,
+    method: PathMethod,
     private _responseBody: string,
     private _contentType = "application/json",
     private _encoded = false
@@ -31,12 +31,12 @@ export class MockRoute extends Route {
     res.contentType(this._contentType).send(this._responseBody);
   }
 
-  update(route: MockRoute): void {
-    this._contentType = route._contentType;
-    this._encoded = route._encoded;
-    this._responseBody = route._responseBody;
-    this._method = route._method;
-    this._collection = route._collection;
-    this._path = route._path;
+  update(path: MockPath): void {
+    this._contentType = path._contentType;
+    this._encoded = path._encoded;
+    this._responseBody = path._responseBody;
+    this._method = path._method;
+    this._collection = path._collection;
+    this._path = path._path;
   }
 }

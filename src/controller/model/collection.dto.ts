@@ -1,6 +1,6 @@
-import { RouteDto } from "./route.dto";
+import { PathDto } from "./path.dto";
 
 export interface CollectionDto {
   name: string;
-  routes?: RouteDto[];
+  paths?: PathDto[];
 }

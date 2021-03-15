@@ -1,20 +1,20 @@
 import { existsSync, promises as fs } from "fs";
 import { Collection } from "../domain/model/collection";
 import path from "path";
-import { MockModel, ProxyModel, RouteModel } from "./model/route.model";
-import { CollectionModel, RouteMap } from "./model/collection.model";
-import { MockRoute } from "../domain/model/mock.route";
-import { ProxyRoute } from "../domain/model/proxy.route";
-import { Route } from "../domain/model/route";
-import * as routeMapper from "./mapper/route.to.route-model.mapper";
+import { MockModel, ProxyModel } from "./model/path.model";
+import { CollectionModel, PathMap } from "./model/collection.model";
+import { MockPath } from "../domain/model/mockPath";
+import { ProxyPath } from "../domain/model/proxyPath";
+import { Path } from "../domain/model/path";
+import * as pathMapper from "./mapper/path.to.path-model.mapper";
 import { COLLECTIONS_PATH } from "../common/config";
 
 export async function updateCollection(collection: Collection): Promise<void> {
   const model: CollectionModel = {
     name: collection.name,
-    routes: collection.routes.reduce((routes: RouteMap, route: Route) => {
-      routes[route.id] = routeMapper.map(route);
-      return routes;
+    paths: collection.paths.reduce((paths: PathMap, path: Path) => {
+      paths[path.id] = pathMapper.map(path);
+      return paths;
     }, {}),
   };
   await fs.writeFile(
@@ -32,7 +32,7 @@ export async function createCollection(name: string): Promise<void> {
     await fs.mkdir(collectionFolder);
     await fs.writeFile(
       path.join(collectionFolder, "collection.json"),
-      JSON.stringify({ routes: [] })
+      JSON.stringify({ paths: [] })
     );
   }
 }
@@ -52,36 +52,30 @@ export async function getCollection(name: string): Promise<Collection> {
 
   return new Collection(
     name,
-    Object.keys(collection.routes).map((id) => {
-      const route = collection.routes[id];
-      switch (route.type) {
+    Object.keys(collection.paths).map((id) => {
+      const path = collection.paths[id];
+      switch (path.type) {
         case "mock":
-          return mapMock(id, collection.name, route as MockModel);
+          return mapMock(id, collection.name, path as MockModel);
         case "proxy":
-          return mapProxy(id, collection.name, route as ProxyModel);
+          return mapProxy(id, collection.name, path as ProxyModel);
       }
     })
   );
 }
 
-function mapProxy(id: string, collectionName: string, route: ProxyModel) {
-  return new ProxyRoute(
-    id,
-    collectionName,
-    route.path,
-    route.method,
-    route.target
-  );
+function mapProxy(id: string, collectionName: string, path: ProxyModel) {
+  return new ProxyPath(id, collectionName, path.path, path.method, path.target);
 }
 
-function mapMock(id: string, collectionName: string, route: MockModel) {
-  return new MockRoute(
+function mapMock(id: string, collectionName: string, path: MockModel) {
+  return new MockPath(
     id,
     collectionName,
-    route.path,
-    route.method,
-    route.responseBody,
-    route.contentType,
-    route.encoded
+    path.path,
+    path.method,
+    path.responseBody,
+    path.contentType,
+    path.encoded
   );
 }

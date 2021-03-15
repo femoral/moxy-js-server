@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { collectionsController } from "./controller/collections";
-import { routesController } from "./controller/routes";
+import { pathsController } from "./controller/paths";
 import { createProxyServer } from "http-proxy";
 import * as childController from "./child/controller";
 import fs from "fs";
@@ -16,7 +16,7 @@ init();
 app.use(cors());
 app.use(express.json());
 app.use("/collections", collectionsController);
-app.use("/collections", restartMiddleware, routesController);
+app.use("/collections", restartMiddleware, pathsController);
 
 app.use((req, res) => {
   proxyServer.web(req, res);

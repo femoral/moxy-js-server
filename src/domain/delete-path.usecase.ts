@@ -1,13 +1,12 @@
-import { Route } from "./model/route";
 import * as collectionRepository from "../data/json-collection-info.repository";
 
 export async function execute(
   collectionName: string,
-  routeId: string
+  pathId: string
 ): Promise<void> {
-  const collection = await collectionRepository.getCollection(routeId);
+  const collection = await collectionRepository.getCollection(pathId);
 
-  collection.deleteRoute(collectionName);
+  collection.deletePath(collectionName);
 
   await collectionRepository.updateCollection(collection);
 }

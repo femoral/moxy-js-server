@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 
-export abstract class Route {
+export abstract class Path {
   protected constructor(
     protected _id: string,
     protected _collection: string,
     protected _path: string,
-    protected _method: RouteMethod
+    protected _method: PathMethod
   ) {}
 
   get id(): string {
@@ -20,13 +20,13 @@ export abstract class Route {
     return this._path;
   }
 
-  get method(): RouteMethod {
+  get method(): PathMethod {
     return this._method;
   }
 
   abstract handler(req: Request, res: Response): void;
 
-  abstract update(route: Route): void;
+  abstract update(path: Path): void;
 }
 
-export type RouteMethod = "get" | "post" | "patch" | "options" | "put" | "all";
+export type PathMethod = "get" | "post" | "patch" | "options" | "put" | "all";

@@ -1,8 +1,8 @@
-import { RouteModel } from "./route.model";
+import { PathModel } from "./path.model";
 
 export interface CollectionModel {
   name: string;
-  routes: RouteMap;
+  paths: PathMap;
 }
 
-export type RouteMap = { [id: string]: RouteModel };
+export type PathMap = { [id: string]: PathModel };

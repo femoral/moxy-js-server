@@ -1,14 +1,14 @@
-import { Route, RouteMethod } from "./route";
+import { Path, PathMethod } from "./path";
 import { Request, Response } from "express";
 import { proxyServer } from "../../common/proxy";
 import { v4 as uuid } from "uuid";
 
-export class ProxyRoute extends Route {
+export class ProxyPath extends Path {
   constructor(
     id = uuid(),
     collection: string,
     path: string,
-    method: RouteMethod,
+    method: PathMethod,
     private _target: string
   ) {
     super(id, collection, path, method);
@@ -24,10 +24,10 @@ export class ProxyRoute extends Route {
     });
   }
 
-  update(route: ProxyRoute): void {
-    this._target = route._target;
-    this._path = route._path;
-    this._collection = route._collection;
-    this._method = route._method;
+  update(path: ProxyPath): void {
+    this._target = path._target;
+    this._path = path._path;
+    this._collection = path._collection;
+    this._method = path._method;
   }
 }

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as getCollectionsUseCase from "../../domain/get-collections.usecase";
-import * as collectionMapper from "../mapper/collection-dto.to.route.mapper";
+import * as collectionMapper from "../mapper/collection-dto.to.path.mapper";
 
 export async function getCollections(req: Request, res: Response) {
   res.send(

@@ -1,27 +1,27 @@
-import { Route } from "./route";
+import { Path } from "./path";
 
 export class Collection {
-  constructor(private readonly _name: string, private _routes?: Route[]) {}
+  constructor(private readonly _name: string, private _paths?: Path[]) {}
 
   get name(): string {
     return this._name;
   }
 
-  get routes(): Route[] {
-    return this._routes || [];
+  get paths(): Path[] {
+    return this._paths || [];
   }
 
-  addRoute(route: Route): void {
-    this.routes.push(route);
+  addPath(path: Path): void {
+    this.paths.push(path);
   }
 
-  updateRoute(updatedRoute: Route) {
-    this.routes
-      .filter((route) => route.id === updatedRoute.id)
-      .forEach((route) => route.update(updatedRoute));
+  updatePath(updatedPath: Path) {
+    this.paths
+      .filter((path) => path.id === updatedPath.id)
+      .forEach((path) => path.update(updatedPath));
   }
 
-  deleteRoute(routeId: string) {
-    this._routes = this.routes.filter((route) => route.id === routeId);
+  deletePath(pathId: string) {
+    this._paths = this.paths.filter((path) => path.id === pathId);
   }
 }
