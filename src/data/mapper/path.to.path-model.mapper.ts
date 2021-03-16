@@ -1,7 +1,7 @@
 import { MockModel, PathModel, ProxyModel } from "../model/path.model";
 import { Path } from "../../domain/model/path";
-import { ProxyPath } from "../../domain/model/proxyPath";
-import { MockPath } from "../../domain/model/mockPath";
+import { ProxyPath } from "../../domain/model/proxy.path";
+import { MockPath } from "../../domain/model/mock.path";
 
 export function map(path: Path): PathModel {
   switch (path.constructor.name) {

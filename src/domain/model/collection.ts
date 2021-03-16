@@ -1,7 +1,16 @@
 import { Path } from "./path";
+import { v4 as uuid } from "uuid";
 
 export class Collection {
-  constructor(private readonly _name: string, private _paths?: Path[]) {}
+  constructor(
+    private readonly _id = uuid(),
+    private readonly _name: string,
+    private _paths?: Path[]
+  ) {}
+
+  get id(): string {
+    return this._id;
+  }
 
   get name(): string {
     return this._name;
@@ -21,7 +30,7 @@ export class Collection {
       .forEach((path) => path.update(updatedPath));
   }
 
-  deletePath(pathId: string) {
-    this._paths = this.paths.filter((path) => path.id === pathId);
+  removePath(pathId: string) {
+    this._paths = this.paths.filter((path) => path.id !== pathId);
   }
 }

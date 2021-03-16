@@ -1,7 +1,7 @@
 import { MockDto, PathDto, ProxyDto } from "../model/path.dto";
 import { Path } from "../../domain/model/path";
-import { ProxyPath } from "../../domain/model/proxyPath";
-import { MockPath } from "../../domain/model/mockPath";
+import { ProxyPath } from "../../domain/model/proxy.path";
+import { MockPath } from "../../domain/model/mock.path";
 
 export function map(path: PathDto): Path {
   switch (path.type) {

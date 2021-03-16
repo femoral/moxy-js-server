@@ -5,6 +5,6 @@ import { deletePath } from "./delete-path.controller";
 
 export const pathsController = Router();
 
-pathsController.post("/:collectionName/paths", addPath);
-pathsController.put("/:collectionName/paths/:id", updatePath);
-pathsController.delete("/:collectionName/paths/:id", deletePath);
+pathsController.post("/:collectionId/paths", addPath);
+pathsController.put("/:collectionId/paths/:id", updatePath);
+pathsController.delete("/:collectionId/paths/:id", deletePath);

@@ -6,7 +6,7 @@ export async function addPath(req: Request, res: Response) {
   res.status(201).send({
     id: await addPathUseCase.execute(
       pathDtoToPathMapper.map({
-        collection: req.params.collectionName,
+        collection: req.params.collectionId,
         ...req.body,
       })
     ),

@@ -1,12 +1,12 @@
 import * as collectionRepository from "../data/json-collection-info.repository";
 
 export async function execute(
-  collectionName: string,
+  collectionId: string,
   pathId: string
 ): Promise<void> {
-  const collection = await collectionRepository.getCollection(pathId);
+  const collection = await collectionRepository.getCollection(collectionId);
 
-  collection.deletePath(collectionName);
+  collection.removePath(pathId);
 
   await collectionRepository.updateCollection(collection);
 }

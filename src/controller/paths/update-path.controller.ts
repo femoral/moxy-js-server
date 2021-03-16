@@ -6,7 +6,7 @@ export async function updatePath(req: Request, res: Response) {
   await updatePathUseCase.execute(
     pathDtoToPathMapper.map({
       id: req.params.id,
-      collection: req.params.collectionName,
+      collection: req.params.collectionId,
       ...req.body,
     })
   );
