@@ -65,9 +65,9 @@ export async function getCollection(id: string): Promise<Collection> {
       const path = collection.paths[id];
       switch (path.type) {
         case "mock":
-          return mapMock(id, collection.name, path as MockModel);
+          return mapMock(id, collection.id, path as MockModel);
         case "proxy":
-          return mapProxy(id, collection.name, path as ProxyModel);
+          return mapProxy(id, collection.id, path as ProxyModel);
       }
     })
   );
@@ -77,14 +77,14 @@ export async function deleteCollection(name: string): Promise<void> {
   await promisify(rimraf)(path.join(COLLECTIONS_PATH, name));
 }
 
-function mapProxy(id: string, collectionName: string, path: ProxyModel) {
-  return new ProxyPath(id, collectionName, path.path, path.method, path.target);
+function mapProxy(id: string, collectionId: string, path: ProxyModel) {
+  return new ProxyPath(id, collectionId, path.path, path.method, path.target);
 }
 
-function mapMock(id: string, collectionName: string, path: MockModel) {
+function mapMock(id: string, collectionId: string, path: MockModel) {
   return new MockPath(
     id,
-    collectionName,
+    collectionId,
     path.path,
     path.method,
     path.responseBody,
