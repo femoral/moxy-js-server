@@ -5,7 +5,7 @@ export class Collection {
   constructor(
     private readonly _id = uuid(),
     private readonly _name: string,
-    private _paths?: Path[]
+    private _paths: Path[] = []
   ) {}
 
   get id(): string {
