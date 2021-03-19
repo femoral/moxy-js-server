@@ -10,11 +10,7 @@ export const collectionsController = Router();
 
 collectionsController.get("/", catchErrors(getCollections));
 collectionsController.get("/:id", catchErrors(getCollection));
-collectionsController.post(
-  "/:id",
-  restartMiddleware,
-  catchErrors(addCollection)
-);
+collectionsController.post("/", restartMiddleware, catchErrors(addCollection));
 collectionsController.delete(
   "/:id",
   restartMiddleware,
