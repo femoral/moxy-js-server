@@ -13,16 +13,28 @@ process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
     next();
   });
 
-  (await getCollectionsUseCase.getCollections()).forEach((collection) =>
-    collection.paths.forEach((path) =>
-      app[path.method](
-        `/${collection.name}${path.path}`,
-        path.handler.bind(path)
-      )
-    )
-  );
+  (await getCollectionsUseCase.getCollections()).forEach((collection) => {
+    try {
+      collection.paths.forEach((path) => {
+        try {
+          app[path.method](
+            `/${collection.name}${path.path}`,
+            path.handler.bind(path)
+          );
+        } catch (e) {
+          console.error(
+            `failed to load path: ${path.id} on collection: ${collection.name}`
+          );
+        }
+      });
+    } catch (e) {
+      console.error(
+        `failed to load collection: ${collection.id} - ${collection.name}`
+      );
+    }
+  });
 
   app.listen(8081, () => {
-    process.send?.(`Child server starting on port: 8081`);
+    process.send?.(`Moxy server starting on port: 8081`);
   });
 })();

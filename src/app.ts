@@ -5,9 +5,9 @@ import { pathsController } from "./controller/paths";
 import { createProxyServer } from "http-proxy";
 import * as childController from "./child/controller";
 import fs from "fs";
-import { restartMiddleware } from "./child/restart.middleware";
+import { restartMiddleware } from "./controller/middleware/restart.middleware";
 import { COLLECTIONS_PATH, init } from "./common/config";
-import { errorMiddleware } from "./common/error.middleware";
+import { errorMiddleware } from "./controller/middleware/error.middleware";
 
 const app = express();
 const proxyServer = createProxyServer({ target: "http://localhost:8081" });
@@ -26,7 +26,7 @@ app.use((req, res) => {
 app.use(errorMiddleware);
 
 app.listen(8080, async () => {
-  console.log("Main src started on port 8080");
+  console.log("API server started on port 8080");
   await childController.start();
 
   fs.watch(COLLECTIONS_PATH).on(

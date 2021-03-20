@@ -1,5 +1,7 @@
 export class ValidationError extends Error {
-  constructor(message: string) {
+  public readonly status = 400;
+
+  constructor(message: string, public readonly metadata: any = {}) {
     super(message);
   }
 }
