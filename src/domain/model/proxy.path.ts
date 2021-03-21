@@ -20,7 +20,7 @@ export class ProxyPath extends Path {
 
   handler(req: Request, res: Response): void {
     proxyServer.web(req, res, {
-      target: this._target + req.path.replace(`/${this.collection}`, ""),
+      target: this._target + req.path.replace(/^\/[a-zA-Z0-9-_]+/, ""),
     });
   }
 

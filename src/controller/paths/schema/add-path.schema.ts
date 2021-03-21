@@ -54,6 +54,7 @@ export const addProxySchema = {
     target: {
       type: "string",
       nullable: false,
+      pattern: "^http[s]?:\\/\\/[a-zA-Z0-9_\\-.]+(:[0-9]{1,5})?$",
     },
   },
   additionalProperties: true,

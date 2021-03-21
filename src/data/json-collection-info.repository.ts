@@ -14,6 +14,7 @@ import { promisify } from "util";
 export async function updateCollection(collection: Collection): Promise<void> {
   const model: CollectionModel = {
     id: collection.id,
+    basePath: collection.basePath,
     name: collection.name,
     paths: collection.paths.reduce((paths: PathMap, path: Path) => {
       paths[path.id] = pathMapper.map(path);
@@ -28,6 +29,15 @@ export async function updateCollection(collection: Collection): Promise<void> {
 
 export async function createCollection(collection: Collection): Promise<void> {
   const collectionFolder = path.join(COLLECTIONS_PATH, collection.id);
+  const collectionModel: CollectionModel = {
+    id: collection.id,
+    name: collection.name,
+    basePath: collection.basePath,
+    paths: collection.paths.reduce((paths: PathMap, path: Path) => {
+      paths[path.id] = pathMapper.map(path);
+      return paths;
+    }, {}),
+  };
 
   if (existsSync(collectionFolder)) {
     throw new Error("collection already exists");
@@ -35,11 +45,7 @@ export async function createCollection(collection: Collection): Promise<void> {
     await fs.mkdir(collectionFolder);
     await fs.writeFile(
       path.join(collectionFolder, "collection.json"),
-      JSON.stringify(
-        { id: collection.id, name: collection.name, paths: [] },
-        undefined,
-        4
-      )
+      JSON.stringify(collectionModel, undefined, 4)
     );
   }
 }
@@ -61,6 +67,7 @@ export async function getCollection(id: string): Promise<Collection> {
   return new Collection(
     collection.id,
     collection.name,
+    collection.basePath,
     Object.keys(collection.paths).map((id) => {
       const path = collection.paths[id];
       switch (path.type) {

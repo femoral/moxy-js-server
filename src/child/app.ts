@@ -9,7 +9,7 @@ process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
 
   app.use(cors());
   app.use((req: Request, res: Response, next: NextFunction) => {
-    console.log(req.path);
+    console.log(`${req.method.toUpperCase()} ${req.path}`);
     next();
   });
 
@@ -18,7 +18,7 @@ process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
       collection.paths.forEach((path) => {
         try {
           app[path.method](
-            `/${collection.name}${path.path}`,
+            `/${collection.basePath}${path.path}`,
             path.handler.bind(path)
           );
         } catch (e) {

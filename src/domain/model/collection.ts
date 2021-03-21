@@ -5,6 +5,7 @@ export class Collection {
   constructor(
     private readonly _id = uuid(),
     private readonly _name: string,
+    private readonly _basePath: string,
     private _paths: Path[] | undefined = []
   ) {}
 
@@ -14,6 +15,10 @@ export class Collection {
 
   get name(): string {
     return this._name;
+  }
+
+  get basePath(): string {
+    return this._basePath;
   }
 
   get paths(): Path[] {
