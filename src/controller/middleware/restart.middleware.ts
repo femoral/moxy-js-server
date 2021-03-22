@@ -7,7 +7,7 @@ export function restartMiddleware(
   next: NextFunction
 ) {
   res.on("close", async () => {
-    if (res.statusCode && res.statusCode < 400) await restart();
+    if (res.statusCode && res.statusCode < 400) restart();
   });
   next();
 }

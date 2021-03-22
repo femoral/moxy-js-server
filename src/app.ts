@@ -4,9 +4,8 @@ import { collectionsController } from "./controller/collections";
 import { pathsController } from "./controller/paths";
 import { createProxyServer } from "http-proxy";
 import * as childController from "./child/controller";
-import fs from "fs";
 import { restartMiddleware } from "./controller/middleware/restart.middleware";
-import { COLLECTIONS_PATH, init } from "./common/config";
+import { init } from "./common/config";
 import { errorMiddleware } from "./controller/middleware/error.middleware";
 
 const app = express();
@@ -28,9 +27,4 @@ app.use(errorMiddleware);
 app.listen(8080, async () => {
   console.log("API server started on port 8080");
   await childController.start();
-
-  fs.watch(COLLECTIONS_PATH).on(
-    "change",
-    async () => await childController.restart()
-  );
 });

@@ -2,6 +2,8 @@ import { ChildProcess, fork } from "child_process";
 
 const moduleExtension = process.env.NODE_ENV === "production" ? "js" : "ts";
 let child: ChildProcess | undefined;
+const debounceTime = 5000;
+let restartTimeout: NodeJS.Timeout;
 
 export function start() {
   return new Promise<void>((resolve) => {
@@ -13,9 +15,12 @@ export function start() {
   });
 }
 
-export async function restart() {
-  await stop();
-  await start();
+export function restart() {
+  clearTimeout(restartTimeout);
+  restartTimeout = setTimeout(async () => {
+    await stop();
+    await start();
+  }, debounceTime);
 }
 
 function stop() {
