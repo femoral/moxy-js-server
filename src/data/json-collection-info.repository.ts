@@ -1,4 +1,4 @@
-import { existsSync, promises as fs } from "fs";
+import { existsSync, promises as fs } from "graceful-fs";
 import { Collection } from "../domain/model/collection";
 import path from "path";
 import { MockModel, ProxyModel } from "./model/path.model";
