@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import * as getCollectionsUseCase from "../domain/get-collections.usecase";
 import cors from "cors";
+import { childPort } from "../common/args";
 
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
 
@@ -34,7 +35,7 @@ process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
     }
   });
 
-  app.listen(8081, () => {
-    process.send?.(`Moxy server starting on port: 8081`);
+  app.listen(childPort, () => {
+    process.send?.(`Moxy server starting on port: ${childPort}`);
   });
 })();

@@ -30,9 +30,8 @@ export class Collection {
   }
 
   updatePath(updatedPath: Path) {
-    this.paths
-      .filter((path) => path.id === updatedPath.id)
-      .forEach((path) => path.update(updatedPath));
+    const index = this.paths.findIndex((path) => path.id === updatedPath.id);
+    if (index > 0) this.paths[index] = updatedPath;
   }
 
   removePath(pathId: string) {

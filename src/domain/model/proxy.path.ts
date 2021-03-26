@@ -23,11 +23,4 @@ export class ProxyPath extends Path {
       target: this._target + req.path.replace(/^\/[a-zA-Z0-9-_]+/, ""),
     });
   }
-
-  update(path: ProxyPath): void {
-    this._target = path._target;
-    this._path = path._path;
-    this._collection = path._collection;
-    this._method = path._method;
-  }
 }

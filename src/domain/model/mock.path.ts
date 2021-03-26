@@ -30,13 +30,4 @@ export class MockPath extends Path {
   handler(req: Request, res: Response): void {
     res.contentType(this._contentType).send(this._responseBody);
   }
-
-  update(path: MockPath): void {
-    this._contentType = path._contentType;
-    this._encoded = path._encoded;
-    this._responseBody = path._responseBody;
-    this._method = path._method;
-    this._collection = path._collection;
-    this._path = path._path;
-  }
 }
