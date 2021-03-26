@@ -7,9 +7,12 @@ import * as childController from "./child/controller";
 import { restartMiddleware } from "./controller/middleware/restart.middleware";
 import { init } from "./common/config";
 import { errorMiddleware } from "./controller/middleware/error.middleware";
+import { childPort, port } from "./common/args";
 
 const app = express();
-const proxyServer = createProxyServer({ target: "http://localhost:8081" });
+const proxyServer = createProxyServer({
+  target: `http://localhost:${childPort}`,
+});
 
 init();
 
@@ -24,7 +27,7 @@ app.use((req, res) => {
 
 app.use(errorMiddleware);
 
-app.listen(8080, async () => {
-  console.log("API server started on port 8080");
+app.listen(port, async () => {
+  console.log(`API server started on port ${port}`);
   await childController.start();
 });

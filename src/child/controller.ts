@@ -7,7 +7,7 @@ let restartTimeout: NodeJS.Timeout;
 
 export function start() {
   return new Promise<void>((resolve) => {
-    child = fork(`${__dirname}/app.${moduleExtension}`);
+    child = fork(`${__dirname}/app.${moduleExtension}`, process.argv.slice(2));
     child.once("message", (message) => {
       console.log(message);
       resolve();

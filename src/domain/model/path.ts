@@ -25,8 +25,6 @@ export abstract class Path {
   }
 
   abstract handler(req: Request, res: Response): void;
-
-  abstract update(path: Path): void;
 }
 
 export type PathMethod = "get" | "post" | "patch" | "options" | "put" | "all";
