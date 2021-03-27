@@ -4,11 +4,12 @@
   "description": "Mocks & Reverse Proxy",
   "main": "dist/app.js",
   "scripts": {
-    "prepack": "npm run build",
     "build": "tsc",
     "start": "cross-env NODE_ENV=production node dist/app.js",
     "serve": "ts-node src/app.ts",
     "serve:child": "ts-node src/child/app.ts",
+    "prepack": "npm run build",
+    "prepare": "node bin/prepare.js",
     "postinstall": "node bin/postinstall.js"
   },
   "keywords": [
