@@ -4,7 +4,7 @@
   "description": "Mocks & Reverse Proxy",
   "main": "dist/app.js",
   "files": [
-    "dist/**/*"
+    "dist"
   ],
   "scripts": {
     "build": "tsc",
