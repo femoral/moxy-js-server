@@ -3,9 +3,6 @@
   "version": "0.0.1",
   "description": "Mocks & Reverse Proxy",
   "main": "dist/app.js",
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "prepack": "npm run build",
     "build": "tsc",
