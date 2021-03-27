@@ -7,10 +7,12 @@
     "dist"
   ],
   "scripts": {
+    "prepack": "npm run build",
     "build": "tsc",
     "start": "cross-env NODE_ENV=production node dist/app.js",
     "serve": "ts-node src/app.ts",
-    "serve:child": "ts-node src/child/app.ts"
+    "serve:child": "ts-node src/child/app.ts",
+    "postinstall": "node bin/postinstall.js"
   },
   "keywords": [
     "mock",
