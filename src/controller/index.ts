@@ -29,7 +29,7 @@ const makeMoxyApiRouter = ({
 
   router.use(express.json());
   router.use(
-    "/collections",
+    "/api/collections",
     collectionsRouter({
       addCollection,
       deleteCollection,
@@ -40,7 +40,7 @@ const makeMoxyApiRouter = ({
     })
   );
   router.use(
-    "/collections",
+    "/api/collections",
     restartMiddleware,
     pathsRouter({
       addPath,
@@ -49,7 +49,9 @@ const makeMoxyApiRouter = ({
     })
   );
 
-  router.use(defaultHandler.web);
+  router.use((req, res) => {
+    defaultHandler.web(req, res);
+  });
   router.use(errorMiddleware);
 
   return router;
