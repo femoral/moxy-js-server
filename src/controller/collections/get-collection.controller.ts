@@ -1,14 +1,20 @@
-import { Request, Response } from "express";
-import * as getCollectionUseCase from "../../domain/get-collection.usecase";
+import { Request, RequestHandler, Response } from "express";
 import * as collectionMapper from "../mapper/collection-dto.to.collection.mapper";
 import { validateUuid } from "../../common/validator";
+import { GetCollectionUseCase } from "../../domain/get-collection.usecase";
 
-export async function getCollection(req: Request, res: Response) {
+const makeGetCollectionController = ({
+  getCollectionUseCase,
+}: {
+  getCollectionUseCase: GetCollectionUseCase;
+}): RequestHandler => async (req: Request, res: Response) => {
   const collectionId = req.params.id;
   validateUuid(collectionId);
   res.send(
     collectionMapper.reverseMap(
-      await getCollectionUseCase.getCollection(collectionId)
+      await getCollectionUseCase.execute(collectionId)
     )
   );
-}
+};
+
+export default makeGetCollectionController;

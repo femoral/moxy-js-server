@@ -1,9 +1,22 @@
 import express, { NextFunction, Request, Response } from "express";
-import * as getCollectionsUseCase from "../domain/get-collections.usecase";
 import cors from "cors";
-import { childPort } from "../common/args";
+import makeGetCollectionsUseCase from "../domain/get-collections.usecase";
+import makeJsonGetCollectionsRepository from "../data/json-get-collections.repository";
+import makeJsonGetCollectionRepository from "../data/json-get-collection.repository";
+import { join } from "path";
 
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
+
+const [, , port, configPath] = process.argv;
+
+const collectionsBasePath = join(configPath, "collections");
+
+const getCollectionUseCase = makeGetCollectionsUseCase({
+  getCollections: makeJsonGetCollectionsRepository({
+    collectionsBasePath,
+    getCollection: makeJsonGetCollectionRepository({ collectionsBasePath }),
+  }),
+});
 
 (async () => {
   const app = express();
@@ -14,7 +27,7 @@ process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
     next();
   });
 
-  (await getCollectionsUseCase.getCollections()).forEach((collection) => {
+  (await getCollectionUseCase.execute()).forEach((collection) => {
     try {
       collection.paths.forEach((path) => {
         try {
@@ -35,7 +48,7 @@ process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
     }
   });
 
-  app.listen(childPort, () => {
-    process.send?.(`Moxy server starting on port: ${childPort}`);
+  app.listen(port, () => {
+    process.send?.(`Moxy server starting on port: ${port}`);
   });
 })();

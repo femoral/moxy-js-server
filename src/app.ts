@@ -1,35 +1,30 @@
 import express from "express";
-import cors from "cors";
-import { collectionsController } from "./controller/collections";
-import { pathsController } from "./controller/paths";
-import { createProxyServer } from "http-proxy";
-import * as childController from "./child/controller";
-import { restartMiddleware } from "./controller/middleware/restart.middleware";
-import { init } from "./common/config";
-import { errorMiddleware } from "./controller/middleware/error.middleware";
-import { childPort, port } from "./common/args";
+import makeChildController from "./child/controller";
+import makeMoxyApiRouter from "./controller";
+import makeRestartMiddleware from "./controller/middleware/restart.middleware";
+import { join } from "path";
+import { homedir } from "os";
 
-export const app = express();
+const app = express();
 
-const proxyServer = createProxyServer({
-  target: `http://localhost:${childPort}`,
+const configPath = join(homedir(), ".moxy");
+const childPort = "3501";
+
+const childController = makeChildController({
+  childPort,
+  debounceTime: 5000,
+  configPath,
 });
 
-init();
-
-app.use(cors());
-app.use(express.json());
-app.use("/collections", collectionsController);
-app.use("/collections", restartMiddleware, pathsController);
-
-app.use((req, res) => {
-  proxyServer.web(req, res);
+const moxyApiRouter = makeMoxyApiRouter({
+  childPort,
+  restartMiddleware: makeRestartMiddleware(childController),
+  configPath,
 });
 
-app.use(errorMiddleware);
+app.use(moxyApiRouter);
 
-if (require.main === module)
-  app.listen(port, async () => {
-    console.log(`API server started on port ${port}`);
-    await childController.start();
-  });
+app.listen(3500, async () => {
+  console.log(`API server started on port 3500`);
+  await childController.start();
+});

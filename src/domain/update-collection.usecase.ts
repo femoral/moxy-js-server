@@ -1,6 +1,19 @@
-import { updateCollection } from "../data/json-collection-info.repository";
 import { Collection } from "./model/collection";
+import { UpdateCollection } from "./repository/collection.repository";
 
-export async function execute(collection: Collection): Promise<void> {
-  await updateCollection(collection);
-}
+export type UpdateCollectionUseCase = {
+  execute: (collection: Collection) => Promise<void>;
+};
+
+const makeUpdateCollectionUseCase = (collectionRepository: {
+  updateCollection: UpdateCollection;
+}): UpdateCollectionUseCase => {
+  const execute = async (collection: Collection): Promise<void> => {
+    await collectionRepository.updateCollection(collection);
+  };
+
+  return {
+    execute,
+  };
+};
+export default makeUpdateCollectionUseCase;

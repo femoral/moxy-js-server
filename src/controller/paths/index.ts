@@ -1,22 +1,31 @@
-import { Router } from "express";
-import { addPath } from "./add-path.controller";
-import { updatePath } from "./update-path.controller";
-import { deletePath } from "./delete-path.controller";
+import { RequestHandler, Router } from "express";
 import { catchErrors } from "../middleware/error.middleware";
 import { addPathValidator } from "./schema/add-path.schema";
 import { schemaMiddleware } from "../middleware/schema.middleware";
 import { updatePathValidator } from "./schema/update-path.schema";
 
-export const pathsController = Router();
+const pathsRouter = ({
+  addPath,
+  updatePath,
+  deletePath,
+}: {
+  addPath: RequestHandler;
+  updatePath: RequestHandler;
+  deletePath: RequestHandler;
+}) => {
+  const router = Router();
+  router.post(
+    "/:collectionId/paths",
+    schemaMiddleware(addPathValidator),
+    catchErrors(addPath)
+  );
+  router.put(
+    "/:collectionId/paths/:id",
+    schemaMiddleware(updatePathValidator),
+    catchErrors(updatePath)
+  );
+  router.delete("/:collectionId/paths/:id", catchErrors(deletePath));
 
-pathsController.post(
-  "/:collectionId/paths",
-  schemaMiddleware(addPathValidator),
-  catchErrors(addPath)
-);
-pathsController.put(
-  "/:collectionId/paths/:id",
-  schemaMiddleware(updatePathValidator),
-  catchErrors(updatePath)
-);
-pathsController.delete("/:collectionId/paths/:id", catchErrors(deletePath));
+  return router;
+};
+export default pathsRouter;

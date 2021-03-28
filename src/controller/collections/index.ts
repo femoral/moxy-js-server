@@ -1,33 +1,43 @@
-import { Router } from "express";
-import { getCollections } from "./get-collections.controller";
-import { addCollection } from "./add-collection.controller";
-import { getCollection } from "./get-collection.controller";
-import { restartMiddleware } from "../middleware/restart.middleware";
-import { deleteCollection } from "./delete-collection.controller";
+import { RequestHandler, Router } from "express";
 import { catchErrors } from "../middleware/error.middleware";
 import { addCollectionValidator } from "./schema/add-collection.schema";
 import { schemaMiddleware } from "../middleware/schema.middleware";
 import { updateCollectionValidator } from "./schema/update-collection.schema";
-import { updateCollection } from "./update-collection.controller";
 
-export const collectionsController = Router();
+const collectionsRouter = ({
+  getCollections,
+  addCollection,
+  getCollection,
+  deleteCollection,
+  updateCollection,
+  restartMiddleware,
+}: {
+  getCollections: RequestHandler;
+  addCollection: RequestHandler;
+  getCollection: RequestHandler;
+  deleteCollection: RequestHandler;
+  updateCollection: RequestHandler;
+  restartMiddleware: RequestHandler;
+}) => {
+  const router = Router();
 
-collectionsController.get("/", catchErrors(getCollections));
-collectionsController.get("/:id", catchErrors(getCollection));
-collectionsController.post(
-  "/",
-  schemaMiddleware(addCollectionValidator),
-  restartMiddleware,
-  catchErrors(addCollection)
-);
-collectionsController.put(
-  "/:id",
-  schemaMiddleware(updateCollectionValidator),
-  restartMiddleware,
-  catchErrors(updateCollection)
-);
-collectionsController.delete(
-  "/:id",
-  restartMiddleware,
-  catchErrors(deleteCollection)
-);
+  router.get("/", catchErrors(getCollections));
+  router.get("/:id", catchErrors(getCollection));
+  router.post(
+    "/",
+    schemaMiddleware(addCollectionValidator),
+    restartMiddleware,
+    catchErrors(addCollection)
+  );
+  router.put(
+    "/:id",
+    schemaMiddleware(updateCollectionValidator),
+    restartMiddleware,
+    catchErrors(updateCollection)
+  );
+  router.delete("/:id", restartMiddleware, catchErrors(deleteCollection));
+
+  return router;
+};
+
+export default collectionsRouter;

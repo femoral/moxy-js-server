@@ -31,7 +31,7 @@ export class Collection {
 
   updatePath(updatedPath: Path) {
     const index = this.paths.findIndex((path) => path.id === updatedPath.id);
-    if (index > 0) this.paths[index] = updatedPath;
+    if (index >= 0) this.paths[index] = updatedPath;
   }
 
   removePath(pathId: string) {

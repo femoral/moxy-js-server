@@ -1,6 +1,6 @@
 import { Path, PathMethod } from "./path";
 import { Request, Response } from "express";
-import { proxyServer } from "../../common/proxy";
+import { proxyServer } from "../../child/proxy";
 import { v4 as uuid } from "uuid";
 
 export class ProxyPath extends Path {

@@ -1,6 +1,18 @@
 import { Collection } from "./model/collection";
-import * as getCollectionRepository from "../data/json-collection-info.repository";
+import { GetCollection } from "./repository/collection.repository";
 
-export async function getCollection(name: string): Promise<Collection> {
-  return await getCollectionRepository.getCollection(name);
-}
+export type GetCollectionUseCase = {
+  execute: (collectionId: string) => Promise<Collection>;
+};
+
+const makeGetCollectionUseCase = (getCollectionRepository: {
+  getCollection: GetCollection;
+}): GetCollectionUseCase => {
+  const execute = async (collectionId: string): Promise<Collection> =>
+    await getCollectionRepository.getCollection(collectionId);
+
+  return {
+    execute,
+  };
+};
+export default makeGetCollectionUseCase;

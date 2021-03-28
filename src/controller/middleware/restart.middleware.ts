@@ -1,13 +1,14 @@
 import { NextFunction, Request, Response } from "express";
-import { restart } from "../../child/controller";
+import { ChildController } from "../../child/controller";
 
-export function restartMiddleware(
+const makeRestartMiddleware = (childController: ChildController) => (
   req: Request,
   res: Response,
   next: NextFunction
-) {
+) => {
   res.on("close", async () => {
-    if (res.statusCode && res.statusCode < 400) restart();
+    if (res.statusCode && res.statusCode < 400) childController.restart();
   });
   next();
-}
+};
+export default makeRestartMiddleware;

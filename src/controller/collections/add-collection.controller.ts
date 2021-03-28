@@ -1,12 +1,18 @@
-import { Request, Response } from "express";
-import * as createCollectionUseCase from "../../domain/create-collection.usecase";
+import { Request, RequestHandler, Response } from "express";
+import { CreateCollectionUseCase } from "../../domain/create-collection.usecase";
 import * as collectionMapper from "../mapper/collection-dto.to.collection.mapper";
 import { CollectionDto } from "../model/collection.dto";
 
-export async function addCollection(req: Request, res: Response) {
+const makeAddCollectionController = ({
+  createCollectionUseCase,
+}: {
+  createCollectionUseCase: CreateCollectionUseCase;
+}): RequestHandler => async (req: Request, res: Response) => {
   const collectionDto: CollectionDto = req.body;
   const collection = await createCollectionUseCase.execute(
     collectionMapper.map(collectionDto)
   );
   res.status(201).send({ id: collection.id });
-}
+};
+
+export default makeAddCollectionController;

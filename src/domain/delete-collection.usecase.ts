@@ -1,5 +1,21 @@
-import { deleteCollection } from "../data/json-collection-info.repository";
+import { DeleteCollection } from "./repository/collection.repository";
 
-export async function execute(name: string) {
-  await deleteCollection(name);
-}
+export type DeleteCollectionUseCase = {
+  execute: (name: string) => Promise<void>;
+};
+
+const makeDeleteCollectionUseCase = ({
+  deleteCollection,
+}: {
+  deleteCollection: DeleteCollection;
+}): DeleteCollectionUseCase => {
+  const execute = async (name: string) => {
+    await deleteCollection(name);
+  };
+
+  return {
+    execute,
+  };
+};
+
+export default makeDeleteCollectionUseCase;

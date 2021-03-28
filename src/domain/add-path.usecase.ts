@@ -1,12 +1,27 @@
 import { Path } from "./model/path";
-import * as collectionRepository from "../data/json-collection-info.repository";
+import { Collection } from "./model/collection";
 
-export async function execute(path: Path): Promise<string> {
-  const collection = await collectionRepository.getCollection(path.collection);
+export type AddPathUseCase = { execute: (path: Path) => Promise<string> };
 
-  collection.addPath(path);
+const makeAddPathUseCase = (collectionRepository: {
+  getCollection: (collectionId: string) => Promise<Collection>;
+  updateCollection: (collection: Collection) => Promise<void>;
+}): AddPathUseCase => {
+  const execute = async (path: Path): Promise<string> => {
+    const collection = await collectionRepository.getCollection(
+      path.collection
+    );
 
-  await collectionRepository.updateCollection(collection);
+    collection.addPath(path);
 
-  return path.id;
-}
+    await collectionRepository.updateCollection(collection);
+
+    return path.id;
+  };
+
+  return {
+    execute,
+  };
+};
+
+export default makeAddPathUseCase;

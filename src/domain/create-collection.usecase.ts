@@ -1,7 +1,23 @@
-import { createCollection } from "../data/json-collection-info.repository";
 import { Collection } from "./model/collection";
+import { CreateCollection } from "./repository/collection.repository";
 
-export async function execute(collection: Collection): Promise<Collection> {
-  await createCollection(collection);
-  return collection;
-}
+export type CreateCollectionUseCase = {
+  execute: (collection: Collection) => Promise<Collection>;
+};
+
+const makeCreateCollectionUseCase = ({
+  createCollection,
+}: {
+  createCollection: CreateCollection;
+}): CreateCollectionUseCase => {
+  const execute = async (collection: Collection): Promise<Collection> => {
+    await createCollection(collection);
+    return collection;
+  };
+
+  return {
+    execute,
+  };
+};
+
+export default makeCreateCollectionUseCase;
