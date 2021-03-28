@@ -2,7 +2,7 @@
   "name": "moxy-js-server",
   "version": "0.0.1",
   "description": "Mocks & Reverse Proxy",
-  "main": "dist/app.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "start": "cross-env NODE_ENV=production node dist/app.js",
