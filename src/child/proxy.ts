@@ -5,3 +5,12 @@ export const proxyServer = createProxyServer({
   secure: false,
   ignorePath: true,
 });
+
+proxyServer.on("error", (error, req, res) => {
+  console.error(error.message);
+  res.writeHead(502, {
+    "Content-Type": "text/plain",
+  });
+
+  res.end("Failed to proxy request to target");
+});

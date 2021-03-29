@@ -49,9 +49,7 @@ const makeMoxyApiRouter = ({
     })
   );
 
-  router.use((req, res) => {
-    defaultHandler.web(req, res);
-  });
+  router.use(defaultHandler);
   router.use(errorMiddleware);
 
   return router;

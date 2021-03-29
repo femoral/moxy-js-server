@@ -21,6 +21,7 @@ import makeUpdateCollectionController from "../controller/collections/update-col
 import makeUpdateCollectionUseCase from "../domain/update-collection.usecase";
 import makeDeletePathController from "../controller/paths/delete-path.controller";
 import makeUpdatePathController from "../controller/paths/update-path.controller";
+import { Request, Response } from "express";
 
 export type AppConfig = {
   childPort: string;
@@ -45,6 +46,19 @@ const bootstrapApp = ({ childPort, configPath }: AppConfig): any => {
   });
   const deleteCollectionRepository = makeJsonDeleteCollectionRepository({
     collectionsBasePath,
+  });
+
+  const proxyServer = createProxyServer({
+    target: `http://localhost:${childPort}`,
+  });
+
+  proxyServer.on("error", (error, req, res) => {
+    console.error(error.message);
+    res.writeHead(502, {
+      "Content-Type": "text/plain",
+    });
+
+    res.end("Failed to proxy request to child server");
   });
 
   return {
@@ -91,9 +105,7 @@ const bootstrapApp = ({ childPort, configPath }: AppConfig): any => {
         getCollection: getCollectionRepository,
       }),
     }),
-    defaultHandler: createProxyServer({
-      target: `http://localhost:${childPort}`,
-    }),
+    defaultHandler: (req: Request, res: Response) => proxyServer.web(req, res),
   };
 };
 export default bootstrapApp;
