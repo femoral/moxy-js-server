@@ -14,7 +14,7 @@ const makeJsonGetCollectionsRepository = ({
 }): GetCollections => async (): Promise<Collection[]> =>
   Promise.all(
     (await fs.readdir(collectionsBasePath, { withFileTypes: true }))
-      .filter((dirEntry) => dirEntry.isDirectory())
+      .filter((dirEntry) => dirEntry.isDirectory() && dirEntry.name[0] !== ".")
       .map((dirEntry) => getCollection(dirEntry.name))
   );
 export default makeJsonGetCollectionsRepository;
