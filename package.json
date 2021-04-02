@@ -1,6 +1,6 @@
 {
   "name": "moxy-js-server",
-  "version": "0.0.1-alpha.4",
+  "version": "0.0.1-alpha.5",
   "description": "Mocks & Reverse Proxy",
   "main": "dist/index.js",
   "scripts": {
@@ -8,6 +8,7 @@
     "start": "cross-env NODE_ENV=production node dist/app.js",
     "serve": "ts-node src/app.ts",
     "serve:child": "ts-node src/child/app.ts",
+    "preversion": "npm run build",
     "prepack": "npm run build",
     "prepare": "node bin/prepare.js",
     "postinstall": "node bin/postinstall.js"

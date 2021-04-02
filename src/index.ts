@@ -6,10 +6,12 @@ const makeMoxyApi = ({
   childPort,
   configPath,
   debounceTime,
+  onChange,
 }: {
   childPort: string;
   configPath: string;
   debounceTime: number;
+  onChange: (message: string) => void;
 }) => {
   const childController = makeChildController({
     childPort,
@@ -21,6 +23,7 @@ const makeMoxyApi = ({
     childPort,
     restartMiddleware: makeRestartMiddleware(childController),
     configPath,
+    onChange,
   });
 
   return {
