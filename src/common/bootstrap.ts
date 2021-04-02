@@ -22,30 +22,49 @@ import makeUpdateCollectionUseCase from "../domain/update-collection.usecase";
 import makeDeletePathController from "../controller/paths/delete-path.controller";
 import makeUpdatePathController from "../controller/paths/update-path.controller";
 import { Request, Response } from "express";
+import makeChangeMiddleware from "../data/middleware/change.middleware";
 
 export type AppConfig = {
   childPort: string;
   configPath: string;
+  onChange: (message: string) => void;
 };
 
-const bootstrapApp = ({ childPort, configPath }: AppConfig): any => {
+const bootstrapApp = ({ childPort, configPath, onChange }: AppConfig): any => {
   const collectionsBasePath = join(configPath, "collections");
 
-  const createCollectionRepository = makeJsonCreateCollectionRepository({
-    collectionsBasePath,
+  const createCollectionRepository = makeChangeMiddleware({
+    changeFunction: makeJsonCreateCollectionRepository({
+      collectionsBasePath,
+    }),
+    onChange,
+    messagePrefix: "created collection: ",
   });
+
   const getCollectionRepository = makeJsonGetCollectionRepository({
     collectionsBasePath,
   });
+
   const getCollectionsRepository = makeJsonGetCollectionsRepository({
     collectionsBasePath,
     getCollection: getCollectionRepository,
   });
-  const updateCollectionRepository = makeJsonUpdateCollectionRepository({
-    collectionsBasePath,
+
+  const updateCollectionRepository = makeChangeMiddleware({
+    changeFunction: makeJsonUpdateCollectionRepository({
+      collectionsBasePath,
+    }),
+    onChange,
+    messagePrefix: "updated collection: ",
   });
-  const deleteCollectionRepository = makeJsonDeleteCollectionRepository({
-    collectionsBasePath,
+
+  const deleteCollectionRepository = makeChangeMiddleware({
+    changeFunction: makeJsonDeleteCollectionRepository({
+      collectionsBasePath,
+    }),
+    onChange,
+
+    messagePrefix: "deleted collection: ",
   });
 
   const proxyServer = createProxyServer({

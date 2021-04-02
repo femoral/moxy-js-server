@@ -8,10 +8,12 @@ const makeMoxyApiRouter = ({
   childPort,
   configPath,
   restartMiddleware,
+  onChange,
 }: {
   childPort: string;
   configPath: string;
   restartMiddleware: RequestHandler;
+  onChange: (message: string) => void;
 }) => {
   const {
     addCollection,
@@ -23,7 +25,7 @@ const makeMoxyApiRouter = ({
     deletePath,
     updatePath,
     defaultHandler,
-  } = bootstrapApp({ childPort, configPath });
+  } = bootstrapApp({ childPort, configPath, onChange });
 
   const router = Router();
 

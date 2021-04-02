@@ -20,6 +20,7 @@ const moxyApiRouter = makeMoxyApiRouter({
   childPort,
   restartMiddleware: makeRestartMiddleware(childController),
   configPath,
+  onChange: (message) => console.log(message),
 });
 
 app.use(moxyApiRouter);
