@@ -1,6 +1,6 @@
 import { ChildProcess, fork } from "child_process";
 
-const moduleExtension = process.env.NODE_ENV === "production" ? "js" : "ts";
+const moduleExtension = require.extensions[".ts"] ? "ts" : "js";
 let child: ChildProcess | undefined;
 let restartTimeout: NodeJS.Timeout;
 
